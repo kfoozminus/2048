@@ -1,0 +1,16 @@
+{
+  "name": "2048",
+  "description": "The 2048 Game",
+  "launch_path": "/index.html",
+  "icons": {
+	  "32": "/2048-32.png",
+	  "64": "/2048-64.png",
+    "128": "/2048-128.png"
+  },
+  "developer": {
+    "name": "Jannatul Ferdows Jenny"
+  },
+  "default_locale": "en",
+  
+  "chrome": { "navigation": true }
+}

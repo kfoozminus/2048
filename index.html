@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style>
+		table, th, td
+		{
+			text-align: center;
+			border-style: solid;
+			border-color: #BCAEA1;
+			border-collapse: collapse;
+			border-width: 9px;
+			font-weight: 550;
+			font-size: 35px;
+			font-family: Arial;
+		}
+		td
+		{
+			width: 55px;
+		}
+		tr
+		{
+			height: 70px;
+		}
+		table.center
+		{
+    		margin-left:auto;
+    		margin-right:auto;
+  		}
+  		td.colornull
+  		{
+  			background-color: #CDC1B3; color: black;
+  		}
+  		td.color2
+  		{
+  			background-color: #EEE4DA; color: #72685E;
+  		}
+  		td.color4
+  		{
+  			background-color: #ECE0C8; color: #6E6B5C;
+  		}
+  		td.color8
+  		{
+  			background-color: #F2B179; color: #FFF8E7;
+  		}
+  		td.color16
+  		{
+  			background-color: #F59660; color: #FCF8ED;
+  		}
+  		td.color32
+  		{
+  			background-color: #FF756A; color: #FCF8ED;
+  		}
+  		td.color64
+  		{
+  			background-color: #F65D3B; color: #FCF8ED;
+  		}
+  		td.color128
+  		{
+  			background-color: #DFAE48; color: #FCF8ED;
+  		}
+  		td.color256
+  		{
+  			background-color: #E4A933; color: #FCF8ED;
+  		}
+  		td.color512
+  		{
+  			background-color: #E1A825; color: #FCF8ED;
+  		}
+  		td.color1024
+  		{
+  			background-color: #E0A616; color: #FCF8ED;
+  		}
+  		td.color2048
+  		{
+  			background-color: #ECC230; color: #FCF8ED;
+  		}
+  		td.colorup
+  		{
+  			background-color: #5DDB92; color: #FCF8ED;
+  		}
+
+  		.button
+  		{
+  			background: #947964;
+  			border-radius: 5px;
+  			padding: 10px;
+
+  			color: #FCF8ED;
+  			font-family: Arial;
+  			font-weight: 600;
+  		}
+
+  		.button:hover
+  		{
+  			background-color: #886F5C;
+  			cursor: pointer;
+  		}
+
+  		.button:active
+  		{
+  			background-color: #7A6453;
+  		}
+
+	</style>
+</head>
+
+<body onload="start()">
+	<script>
+
+	var ar=new Array(4);
+	for(i=0; i<4; i++)
+	{
+		ar[i]=new Array(4);
+	}
+
+	var target;
+	
+
+	function start()
+	{
+		target=2048;
+		for(i=0; i<4; i++)
+		{
+			for(j=0; j<4; j++)
+			{
+				ar[i][j]="";
+			}
+		}
+		newnum();
+		newnum();
+		printfunc();
+	}
+
+	function ifull()
+	{
+		flag=0;
+		nul=true;
+		for(i=0; i<4; i++)
+		{
+			for(j=0; j<4; j++)
+			{
+				if(ar[i][j]==target)
+				{
+					flag=2;
+					return flag;
+				}
+				if(ar[i][j]=="")nul=false;
+			}
+		}
+		if(nul)
+		{
+			flag=1;
+			//document.getElementById("test").innerHTML=flag+" "+i+" "+j;
+		}
+		if(flag)
+		{
+			for(i=0; i<4; i++)
+			{
+				for(j=1; j<4; j++)
+				{
+					if(ar[i][j]==ar[i][j-1] || ar[j][i]==ar[j-1][i])
+					{
+						flag=0;
+						//document.getElementById("test").innerHTML=flag+" "+i+" "+j;
+						break;
+					}
+				}
+				if(j<4)break;
+			}
+		}
+		//document.getElementById("test").innerHTML="last"+flag+" "+i+" "+j;
+		return flag;
+	}
+
+	function newnum()
+	{
+		var a=(Math.floor((Math.random()*10)+1)%4);
+		var b=(Math.floor((Math.random()*10)+1)%4);
+		if(ar[a][b])newnum();
+		else ar[a][b]=(Math.floor((Math.random()*2)+1)*2);
+	}
+
+	function upfunc()
+	{
+		change=false;
+		for(i=0; i<4; i++)
+		{
+			ind=0;
+			for(j=0; j<4; j++)
+			{
+				if(ar[j][i]!="")
+				{
+					ar[ind][i]=ar[j][i];
+					if(ind!=j)
+					{
+						ar[j][i]="";
+						change=true;
+					}
+					ind++;
+				}
+			}
+			if(ar[0][i] && ar[0][i]==ar[1][i])
+			{
+				ar[0][i]*=2;
+				ar[1][i]=ar[2][i];
+				ar[2][i]=ar[3][i];
+				ar[3][i]="";
+				if(ar[1][i] && ar[1][i]==ar[2][i])
+				{
+					ar[1][i]*=2;
+					ar[2][i]="";
+				}
+				change=true;
+			}
+			else if(ar[1][i] && ar[1][i]==ar[2][i])
+			{
+				ar[1][i]*=2;
+				ar[2][i]=ar[3][i];
+				ar[3][i]="";
+				change=true;
+			}
+			else if(ar[2][i] && ar[2][i]==ar[3][i])
+			{
+				ar[2][i]*=2;
+				ar[3][i]="";
+				change=true;
+			}
+		}
+		if(change)newnum();
+		printfunc();
+	}
+
+	function downfunc()
+	{
+		change=false;
+		for(i=0; i<4; i++)
+		{
+			ind=3;
+			for(j=3; ~j; j--)
+			{
+				if(ar[j][i]!="")
+				{
+					ar[ind][i]=ar[j][i];
+					if(ind!=j)
+					{
+						ar[j][i]="";
+						change=true;
+					}
+					ind--;
+				}
+			}
+			if(ar[3][i] && ar[3][i]==ar[2][i])
+			{
+				ar[3][i]*=2;
+				ar[2][i]=ar[1][i];
+				ar[1][i]=ar[0][i];
+				ar[0][i]="";
+				if(ar[2][i] && ar[2][i]==ar[1][i])
+				{
+					ar[2][i]*=2;
+					ar[1][i]="";
+				}
+				change=true;
+			}
+			else if(ar[2][i] && ar[2][i]==ar[1][i])
+			{
+				ar[2][i]*=2;
+				ar[1][i]=ar[0][i];
+				ar[0][i]="";
+				change=true;
+			}
+			else if(ar[1][i] && ar[1][i]==ar[0][i])
+			{
+				ar[1][i]*=2;
+				ar[0][i]="";
+				change=true;
+			}
+		}
+		if(change)newnum();
+		printfunc();
+	}
+
+	function leftfunc()
+	{
+		change=false;
+		for(i=0; i<4; i++)
+		{
+			ind=0;
+			for(j=0; j<4; j++)
+			{
+				if(ar[i][j]!="")
+				{
+					ar[i][ind]=ar[i][j];
+					if(ind!=j)
+					{
+						ar[i][j]="";
+						change=true;
+					}
+					ind++;
+				}
+			}
+			if(ar[i][0] && ar[i][0]==ar[i][1])
+			{
+				ar[i][0]*=2;
+				ar[i][1]=ar[i][2];
+				ar[i][2]=ar[i][3];
+				ar[i][3]="";
+				if(ar[i][1] && ar[i][1]==ar[i][2])
+				{
+					ar[i][1]*=2;
+					ar[i][2]="";
+				}
+				change=true;
+			}
+			else if(ar[i][1] && ar[i][1]==ar[i][2])
+			{
+				ar[i][1]*=2;
+				ar[i][2]=ar[i][3];
+				ar[i][3]="";
+				change=true;
+			}
+			else if(ar[i][2] && ar[i][2]==ar[i][3])
+			{
+				ar[i][2]*=2;
+				ar[i][3]="";
+				change=true;
+			}
+		}
+		if(change)newnum();
+		printfunc();
+	}
+
+	function rightfunc()
+	{
+		change=false;
+		for(i=0; i<4; i++)
+		{
+			ind=3;
+			for(j=3; ~j; j--)
+			{
+				if(ar[i][j]!="")
+				{
+					ar[i][ind]=ar[i][j];
+					if(ind!=j)
+					{
+						ar[i][j]="";
+						change=true;
+					}
+					ind--;
+				}
+			}
+			if(ar[i][3] && ar[i][3]==ar[i][2])
+			{
+				ar[i][3]*=2;
+				ar[i][2]=ar[i][1];
+				ar[i][1]=ar[i][0];
+				ar[i][0]="";
+				if(ar[i][2] && ar[i][2]==ar[i][1])
+				{
+					ar[i][2]*=2;
+					ar[i][1]="";
+				}
+				change=true;
+			}
+			else if(ar[i][2] && ar[i][2]==ar[i][1])
+			{
+				ar[i][2]*=2;
+				ar[i][1]=ar[i][0];
+				ar[i][0]="";
+				change=true;
+			}
+			else if(ar[i][1] && ar[i][1]==ar[i][0])
+			{
+				ar[i][1]*=2;
+				ar[i][0]="";
+				change=true;
+			}
+		}
+		if(change)newnum();
+		printfunc();
+	}
+
+	function printfunc()
+	{
+		flag=ifull();
+
+		if(flag==1)
+		{
+			document.getElementById("print").innerHTML="Game Over!";
+		}
+		else if(flag==2)
+		{
+			target*=2;
+			document.getElementById("print").innerHTML='You Win!<br><br><div style="text-align:center"><div style="text-align:center"><a class="button" onclick="printfunc()">Keep Going!</a></div><br>';
+		}
+		else
+		{
+			var res='<table class="center">';
+			for(i=0; i<4; i++)
+			{
+				res+="<tr>";
+				for(j=0; j<4; j++)
+				{
+					switch(ar[i][j])
+					{
+						case "": cls="colornull"; break;
+						case 2: cls="color2"; break;
+						case 4: cls="color4"; break;
+						case 8: cls="color8"; break;
+						case 16: cls="color16"; break;
+						case 32: cls="color32"; break;
+						case 64: cls="color64"; break;
+						case 128: cls="color128"; break;
+						case 256: cls="color256"; break;
+						case 512: cls="color512"; break;
+						case 1024: cls="color1024"; break;
+						case 2048: cls="color2048"; break;
+						default: cls="colorup"; break;
+					}
+					res+='<td class="'+cls+'">'+ar[i][j]+"</td>";
+				}
+				res+="</tr>";
+			}
+			res+="</table>";
+			document.getElementById("print").innerHTML=res;
+		}
+	}
+	</script>
+
+	<div style="text-align:center;margin-top:20px;"><a class="button" onclick="start()">New game</a></div><br>
+
+	<div id="print" style="text-align:center;color:#9C9990;font-weight:bold;font-family:Arial;"></div><br>
+
+	<div style="text-align:center;"><a class="button" onclick="upfunc()">Up</a>
+	<a class="button" onclick="downfunc()">Down</a>
+	<a class="button" onclick="leftfunc()">Left</a>
+	<a class="button" onclick="rightfunc()">Right</a></div>
+
+</body>
+
+</html>
